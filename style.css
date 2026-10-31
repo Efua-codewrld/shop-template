@@ -1,0 +1,312 @@
+:root{
+  --bg-primary: #FBF9F6;        /* Main Canvas: Off-White Cream */
+  --text-main: #2B3020;         /* Primary Text & Titles: Deep Camo Green */
+  --text-muted: #5F665E;        /* Secondary Text & Links: Grey-Green Highlight */
+  --brand-accent: #3D2115;      /* Accents & Hover States: Deep Rich Brown */
+  --palette-accent: #F3E5AB;    /* Highlight Accent: Dulled Butter Yellow */
+  --border-subtle: #DCD7C9;     /* Divider Lines: Muted Beige */
+  --font-primary: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+}
+
+
+
+* {margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html{
+    scroll-behavior: smooth;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-main)
+
+}
+body{
+    width: 100%;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    color:var(--text-main);
+    background-color:var(--bg-primary);
+    font-family:var(--font-primary);
+    margin:0;
+    padding:0;
+    overflow-x: hidden; /* <--- This instantly blocks any horizontal overflow */
+}
+
+.hero-banner{
+    height: 100vh;
+    width: 100%;
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0,0,0, 0.4)), 
+    url('images/image5.jpg') center/cover no-repeat;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+.hero-content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.brand-title{
+    font-size: 5rem;
+    font-weight: 300;
+    color: var(--palette-accent);
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+}
+
+.shop-now-btn{
+    display: inline-block;
+    padding: 0.8rem 2.2rem;
+    border: 1px solid var(--border-subtle);
+    color: var(--brand-accent);
+    text-decoration: none;
+    font-size: 0.85rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+
+.shop-now-btn:hover{
+    background-color: var(--border-subtle);
+}
+ .sticky-nav{
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: var(--border-subtle);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-subtle);
+    padding: 1.2rem 0;
+ }
+
+ .tab-links{
+    display: flex;
+    justify-content: center;
+    align-items : center;
+    gap: 3rem;
+
+ }
+
+ .tab-item{
+    color: var(--brand-accent);
+    text-decoration : none;
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+
+ }
+
+ .tab-item:hover{
+    color: var(--bg-primary);
+ }
+
+ main{
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+
+ }
+
+.catalog-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    max-width: 1400px;
+  margin: 4rem auto;
+  padding: 0 2rem;
+} 
+
+.product-card{
+    position: relative;
+    overflow: hidden;
+    background-color: #1a1a1a;
+    aspect-ratio: 3 / 4;
+    cursor:pointer;
+}
+.product-card img{
+    width:100%;
+    height:100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.product-card:hover img {
+  transform: scale(1.04);
+}
+footer{
+    text-align: center;
+    padding: 3rem 1rem;
+    border-top:1px solid #222222;
+    font-size: 0.75rem;
+    letter-spacing: 0.15rem;
+    color: #666666;
+}
+
+.card-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 1.2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  background: linear-gradient(to top, rgba(43, 48, 32, 0.85), transparent);
+  color: var(--palette-accent);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.product-card:hover .card-overlay{
+    opacity:1;
+}
+img{
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+h1{
+    text-align: center;
+    margin-top: 60px;
+    margin-bottom: 24px;
+}
+
+.subscription{ position: relative;
+    width: 100%;
+    min-height: 100vh; /* Makes the section fill the entire screen height */
+    display: flex;
+    justify-content: center; /* Centers card horizontally */
+    align-items: center; /* Centers card vertically */
+    overflow: hidden;
+    padding:20px;
+    box-sizing: border-box;
+    font-family: var(--font-primary);
+}
+
+.subscription > .banner-img{
+    position: absolute;
+    top: 0;
+    left:0;
+    width: 100%;
+    height:100%;
+    object-fit: cover;
+    z-index: 1; /* Pushes image to background layer */
+}
+
+/* 2. The Frosted Glass Card Wrapper */
+.subscription-card{
+    position: relative;
+    z-index: 2;  /* Forces card to stay above the background image */
+    width: 100%;
+    max-width: 420px;/* Ensures long placeholders don't get cut off */
+    padding: 40px 30px;
+    border-radius: 16px;
+    box-sizing: border-box;
+
+    /* Glassmorphism styling rules */
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);/* Safari support */
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 32px 0 rgba(0,0,0, 0.15);
+
+    text-align: center;
+}
+
+/* Typography styles */
+.subscription-card h2 {
+  margin: 0 0 6px 0;
+  color: #1a1a1a;
+  font-size: 1.6rem;
+  text-align: center;
+}
+
+.subscription-card .card-subtitle {
+  margin: 0 0 25px 0;
+  color: #4a4a4a;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+/* 3. Stacked Fields Configuration */
+.formRow {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Smooth spacing between individual form blocks */
+  text-align: left;       /* Aligns your labels back to the left */
+  margin-top: 24px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px; /* Spacing between label text and input boundary */
+}
+
+.formGroup label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #2a2a2a;
+}
+
+/* Professional Input Field Styling */
+.formGroup input {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 0.95rem;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.7);
+  box-sizing: border-box;
+  color: #1a1a1a;
+  transition: all 0.2s ease;
+}
+
+/* Placeholder Formatting to prevent clipping */
+.formGroup input::placeholder {
+  color: #666666;
+  font-size: 0.9rem;
+}
+
+.formGroup input:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.95);
+  border-color: #000000; /* Sleek black focus line */
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+}
+
+/* 4. Action Button Design */
+.submit-btn{
+    width:100%;
+    padding: 14px;
+    margin-top: 5px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--palette-accent);
+    background-color: var(--brand-accent);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+
+}
+
+.submit-btn:hover {
+  opacity: 0.9;
+}
