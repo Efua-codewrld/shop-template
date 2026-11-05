@@ -6,6 +6,14 @@
   --palette-accent: #F3E5AB;    /* Highlight Accent: Dulled Butter Yellow */
   --border-subtle: #DCD7C9;     /* Divider Lines: Muted Beige */
   --font-primary: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --card-bg-dark: #1a1a1a;  /*(Used for product card backgrounds, footer borders, and card media placeholders)*/
+  --border-dark: #222222; /* Used for the footer top border divider*/
+  --placeholder-gray: #666666; /* Used for footer text and input placeholders*/
+  --text-subtle: #4a4a4a; /*Used for subscription card subtitles*/
+  --label-dark: #2a2a2a; /*Used for form group labels*/
+  --focus-black: #000000; /*Used for input focus border outline*/
+  --filter-bg: #f9f9f9; /*Used for the filter controls background box*/
+  --filter-border: #ddd; /*Used for filter input and select borders*/
 
 }
 
@@ -32,7 +40,7 @@ body{
     font-family:var(--font-primary);
     margin:0;
     padding:0;
-    overflow-x: hidden; /* <--- This instantly blocks any horizontal overflow */
+    /*overflow-x: hidden; /* <--- This instantly blocks any horizontal overflow */
 }
 
 .hero-banner{
@@ -54,10 +62,12 @@ body{
 }
 
 .brand-title{
-    font-size: 5rem;
+    font-size: clamp(2rem, 10vw, 5rem);
     font-weight: 300;
     color: var(--palette-accent);
     letter-spacing: 0.35em;
+    margin-right: -0.35em; /* cancels the trailing space */
+    margin:0;
     text-transform: uppercase;
 }
 
@@ -83,11 +93,12 @@ body{
     background-color: var(--border-subtle);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--border-subtle);
-    padding: 1.2rem 0;
+    padding: 1.2rem 1rem;
  }
 
  .tab-links{
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     align-items : center;
     gap: 3rem;
@@ -115,14 +126,23 @@ body{
 
  }
 
-.catalog-grid{
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-    max-width: 1400px;
+/*.catalog-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(280px,100%), 1fr));
+  gap: 2rem;
+  max-width: 1400px;
   margin: 4rem auto;
   padding: 0 2rem;
-} 
+} */
+
+.catalog-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  max-width: 1400px;
+  margin: 4rem auto;
+  padding: 0 2rem;
+}
 
 .product-card{
     position: relative;
@@ -309,4 +329,184 @@ h1{
 
 .submit-btn:hover {
   opacity: 0.9;
+}
+
+/* Core Page Layout */
+.shop-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    font-family: sans-serif;
+}
+
+/* Filter Controls Box styling */
+.filter-controls {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: flex-end;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex: 1;
+    min-width: 200px;
+}
+
+.filter-group input, 
+.filter-group select {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+/* Catalog Responsive Grid Layout */
+/*.catalog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+}
+*/
+
+/*shop_grid.js css rules atart here*/
+.shop-card{
+    position: relative;
+}
+
+.card-media{
+    position: relative;
+    overflow: hidden;
+    background-color: #1a1a1a;
+    aspect-ratio: 3 / 4;
+}
+
+.card-media img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.shop-card:hover .card-media img{
+    transform: scale(1.04);
+}
+
+/*css for the card information*/
+.card-info{
+    display: flex;
+    flex-direction: column;
+    gap:6px;
+    padding: 0.75rem 0;
+}
+
+.order-btn{
+    background-color: var(--brand-accent);
+    color: var(--palette-accent);
+    padding: 1rem 2rem;
+    width: 100%;
+    min-height: 3rem;
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    border-radius: 999px;
+    border: none;
+
+}
+
+/* 1. Style your mobile toggle button */
+.mobile-toggle-btn {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-subtle);
+    padding: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-main);
+    margin: 1rem 1rem 0 1rem;
+}
+
+.mobile-toggle-btn svg {
+    width: 24px;
+    height: 24px;
+}
+
+/* 2. Hide the filter sidebar by default on mobile */
+.filter-controls {
+    display: none; 
+}
+
+/* 3. When JS adds 'active', slide/display it as a mobile drawer */
+.filter-controls.active {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 140px; 
+    left: 30px;
+    right: 30px;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-subtle);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    padding: 20px;
+    z-index: 1000;
+    border-radius: 8px;
+}
+
+
+@media(max-width: 480px){
+  .brand-title{
+    font-size: clamp(1.5rem, 8vw, 2.5rem); /* Prevents the text from ballooning on small screens */
+    letter-spacing: 0.15em;                 /* Reduces the massive spacing between letters */
+    margin-right: -0.15em;                  /* Aligns with the new letter spacing */
+  }
+
+  .tab-links{
+    gap: 1rem
+  }
+
+  .tab-item{
+    letter-spacing:0.2em;
+    
+  }
+}
+
+
+/* Desktop Upgrade: Shift filters to a sidebar when screens are wide */
+@media (min-width: 768px) {
+    .shop-container {
+        flex-direction: row;
+    }
+    
+    .filter-controls {
+        width: 250px;
+        flex-direction: column;
+        align-items: flex-start;
+        align-self: flex-start;
+    }
+    
+    .catalog-section {
+        flex: 1;
+        min-width: 0;
+    }
+    .mobile-toggle-btn {
+        display: none; /* Hide the mobile button on big screens */
+    }
+
+    .filter-controls {
+        display: flex !important;
+        position: static;
+        box-shadow: none;
+        border: none;
+        width: 250px;
+    }
 }

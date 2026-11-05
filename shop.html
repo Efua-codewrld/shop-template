@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARCHIVE - Editorial & Apparel</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="sticky-nav">
+            <nav class="tab-links">
+                <a href="index.html" class="tab-item">Home</a>
+                <a href="#catalogGrid"  class="tab-item">New Arrivals</a>
+                <a href="shop.html"  class="tab-item">Shop</a>
+                <a href="contact.html" class="tab-item">Contact</a>
+                <a href="terms.html"  class="tab-item">Terms</a>
+
+            </nav>
+        
+        </header>
+<button id="mobileFilterToggle" class="mobile-toggle-btn">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z" />
+    </svg>
+</button>
+
+<main class="shop-container">
+<aside id="filterSidebar" class="filter-controls">
+<h2>Filter & sort </h2>
+
+ <!-- Live Text Search -->
+<div class="filter-group">
+<label for="searchBar">Search Items</label>
+<input type="text" id="searchBar" Placeholder="Type to search">
+</div>
+
+ <!-- Category Filter Tabs -->
+ <div class="filter-group">
+ <label for="categoryFilter">Category</label>
+ <select id="categoryFilter"> 
+      <option value="all">All Categories</option>
+      <option value="tops">Tops & Sweaters</option>
+      <option value="bottoms"> Bottoms & Jorts</option>
+      <option value="bags">Bags & Accessories</option>
+
+ </select>
+ </div>
+
+<!-- Price Sorter Order -->
+ <div class="filter-group">
+<label for="pricesort">Filter By Price</label>
+<select id="pricesort">
+<option value="default">Featured</option>
+<option value="low-high">Price: Low to High</option>
+<option value="high-low">Price: High to Low</option>
+</select>
+ </div>
+ </aside>
+
+<!-- 3. DYNAMIC PRODUCT GRID -->
+<section class="catalog-section">
+<div id="catalogGrid" class="catalog-grid">
+<!-- JavaScript will inject cards here -->
+</div>
+</section>
+</main>
+<!-- Link your script file at the very bottom so the DOM elements are fully loaded -->
+ <script src="shop_grid.js"></script>
+
+  <footer>
+            &copy; 2026 ARCHIVE. ALL RIGHTS RESERVED.
+   </footer>
+</body>
+</html>
