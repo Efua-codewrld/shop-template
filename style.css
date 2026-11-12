@@ -97,6 +97,7 @@ body{
  }
 
  .tab-links{
+    position: relative; /* Gives the absolute button a boundary to lock onto */
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -119,6 +120,57 @@ body{
     color: var(--bg-primary);
  }
 
+ /*shopping cart icon css*/
+.cart-trigger-btn {
+    position: absolute;
+    right: 20px; /* Distance from the far left edge of the nav bar */
+    top: 50%;
+    transform: translateY(-50%); /* Perfect vertical centering */
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.nav-cart-icon {
+    width: 22px;
+    height: 22px;
+    display: inline-block;
+    vertical-align: middle;
+    background: none;
+    border: none;
+    padding:0;
+    cursor: pointer;
+    color: var(--brand-accent);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.3s ease;
+    
+}
+.cart-badge {
+    position: absolute;
+    top: -4px;
+    right: -6px;
+    background-color: var(--brand-accent);
+    color: var(--palette-accent);
+    font-size: 0.65rem;
+    font-weight: bold;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cart-trigger-btn:hover {
+    color: var(--bg-primary); /* Matches your navbar hover state[cite: 1] */
+}
+
+/*styling the main page and content in it*/
  main{
     max-width: 1400px;
     margin: 0 auto;
@@ -126,14 +178,6 @@ body{
 
  }
 
-/*.catalog-grid{
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(280px,100%), 1fr));
-  gap: 2rem;
-  max-width: 1400px;
-  margin: 4rem auto;
-  padding: 0 2rem;
-} */
 
 .catalog-grid{
   display: grid;
@@ -422,6 +466,38 @@ h1{
 
 }
 
+/* The Hover State */
+.order-btn:hover {
+    opacity: 0.92; /* Slightly softens or deepens on hover */
+    transform: translateY(-2px); /* Makes the button physically lift up toward the user's cursor by 2 pixels */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Adds a shadow underneath as it lifts */
+}
+
+#searchBar{
+    width: 100%;
+    height: 100%;
+    padding: 10px 18px; /* Matches .dropdown-trigger padding */
+    border: 1px solid #3b2219; /* Matches your dropdown border color */
+    border-radius: 30px; /* Matches your dropdown pill radius */
+    background-color: var(--bg-card, #fff);
+    font-size: 0.95rem;
+    font-weight: bold;
+    color: var(--text-main, #111);
+    outline: none;
+    box-sizing: border-box;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+}
+
+#searchBar::placeholder {
+    color: #888;
+    font-weight: normal;
+}
+
+#searchBar:focus {
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    border-color: #3b2219;
+}
 /* 1. Style your mobile toggle button */
 .mobile-toggle-btn {
     background: var(--bg-primary);
@@ -462,6 +538,165 @@ h1{
     border-radius: 8px;
 }
 
+/* CSS for the product.html*/
+/* 1. Main container layout: Side-by-side split screen */
+.pdp-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 20px;
+    align-items: start;
+}
+
+/* 2. Contain the image safely */
+.pdp-image-wrapper img {
+    width: 100%;
+    height: auto;
+    max-height: 550px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+/* 3. The "Receipt Style" Info Column using ROOT variables */
+.pdp-info {
+    background: var(--bg-card, #fff); /* Uses your card background variable */
+    border: 1px dashed var(--border-color, #ccc); /* Uses your border variable */
+    padding: 30px;
+    border-radius: 4px;
+    /* This creates the "lifted off the page" card effect */
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.pdp-info h1 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-main, #111);
+}
+
+.pdp-price {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: var(--text-main, #111);
+}
+
+.pdp-desc {
+    margin: 20px 0;
+    line-height: 1.6;
+    color: var(--text-muted, #666);
+    border-top: 1px solid var(--border-color, #eee);
+    border-bottom: 1px solid var(--border-color, #eee);
+    padding: 15px 0;
+}
+
+/*Styling for the product.html buttons*/
+.pdp-actions {
+    margin-top: 25px;
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 10px !important;
+    width: 100% !important;
+}
+
+.pdp-actions button {
+    flex: 1 !important;
+    padding: 12px 10px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.9rem;
+    border-radius: 4px;
+    border: 1px solid var(--border-color, #ccc);
+    text-align: center;
+}
+
+.add-to-cart-btn{
+    background-color: var(--brand-accent);
+    color:var(--palette-accent);
+    border: none;
+}
+
+/* The Hover State */
+.add-to-cart-btn:hover {
+    opacity: 0.92; /* Slightly softens or deepens on hover */
+    transform: translateY(-2px); /* Makes the button physically lift up toward the user's cursor by 2 pixels */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Adds a shadow underneath as it lifts */
+}
+
+/* Container position ( basically transforming the boring dropdown) */
+.custom-dropdown-container {
+    position: relative;
+    display: inline-block;
+    width: 180px;
+}
+
+/* The bubble button */
+.dropdown-trigger {
+    width: 100%;
+    background-color: var(--bg-card, #fff);
+    color: var(--text-main, #111);
+    border: 1px solid #3b2219; /* Your brown border */
+    padding: 10px 18px;
+    border-radius: 30px;
+    font-size: 0.95rem;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+}
+
+.dropdown-trigger:hover {
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-trigger .arrow {
+    font-size: 0.7rem;
+    color: #3b2219;
+    margin-left: 10px;
+}
+
+/* The floating menu popup */
+.dropdown-menu {
+    display: none; /* Hidden by default */
+    position: absolute;
+    top: 115%;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid var(--border-color, #eee);
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+    z-index: 100;
+}
+
+/* Show class for JS toggle */
+.dropdown-menu.show {
+    display: block;
+}
+
+/* Menu items */
+.dropdown-item {
+    padding: 10px 16px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #111;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+/* Hover state: Your exact brown background + yellow accent text! */
+.dropdown-item:hover,
+.dropdown-item.active {
+    background-color: #3b2219 !important; /* Your brand brown */
+    color: var(--palette-accent) !important; /* Your yellow accent text */
+}
 
 @media(max-width: 480px){
   .brand-title{
@@ -479,7 +714,6 @@ h1{
     
   }
 }
-
 
 /* Desktop Upgrade: Shift filters to a sidebar when screens are wide */
 @media (min-width: 768px) {
@@ -508,5 +742,9 @@ h1{
         box-shadow: none;
         border: none;
         width: 250px;
+    }
+
+    .pdp-grid {
+        grid-template-columns: 1fr;
     }
 }
