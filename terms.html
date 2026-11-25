@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARCHIVE - Terms &amp; Conditions</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="cart.js" defer></script>
+</head>
+<body>
+
+    <header class="sticky-nav">
+        <nav class="tab-links">
+            <a href="index.html" class="tab-item">Home</a>
+            <a href="index.html#catalogGrid" class="tab-item">New Arrivals</a>
+            <a href="shop.html" class="tab-item">Shop</a>
+            <a href="contact.html" class="tab-item">Contact</a>
+            <a href="terms.html" class="tab-item">Terms</a>
+            <button type="button" class="cart-trigger-btn" aria-label="Open bag">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="nav-cart-icon">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                </svg>
+                <span class="cart-badge">0</span>
+            </button>
+        </nav>
+    </header>
+
+    <main class="contact-page">
+        <section class="contact-card" style="max-width: 720px;">
+            <div class="contact-card-header">
+                <h1>Terms &amp; Conditions</h1>
+                <p>Last updated: November 2026</p>
+            </div>
+
+            <div class="contact-form" style="gap: 18px;">
+                <div class="contact-field">
+                    <label>1. Orders &amp; Availability</label>
+                    <p style="font-size: 0.92rem; color: #555;">
+                        Items are listed subject to stock availability. Submitting an order inquiry via WhatsApp reserves or requests the item until payment and dispatch details are confirmed.
+                    </p>
+                </div>
+
+                <div class="contact-field">
+                    <label>2. Pricing &amp; Payments</label>
+                    <p style="font-size: 0.92rem; color: #555;">
+                        Prices are displayed in Ghana Cedis (GHS) unless stated otherwise. Delivery fees, if applicable, are confirmed prior to completing your order.
+                    </p>
+                </div>
+
+                <div class="contact-field">
+                    <label>3. Shipping &amp; Delivery</label>
+                    <p style="font-size: 0.92rem; color: #555;">
+                        Delivery timelines and rider/dispatch arrangements depend on your location and are shared once an order is confirmed.
+                    </p>
+                </div>
+
+                <div class="contact-field">
+                    <label>4. Returns, Exchanges &amp; Sizing</label>
+                    <p style="font-size: 0.92rem; color: #555;">
+                        Archive and curated pieces may have specific fit or condition notes. Please reach out via the Contact page or WhatsApp promptly if there is an issue with your order.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Dimmed Background Overlay -->
+    <div class="cart-overlay" id="cart-overlay"></div>
+
+    <!-- Slide-Out Cart Drawer -->
+    <aside class="cart-drawer" id="cart-drawer">
+        <div class="cart-header">
+            <h2>Your Bag</h2>
+            <button class="close-cart-btn" id="close-cart-btn" aria-label="Close cart">&times;</button>
+        </div>
+
+        <div class="cart-items-container" id="cart-items-container">
+            <p class="empty-cart-msg">Your bag is currently empty.</p>
+        </div>
+
+        <div class="cart-footer">
+            <div class="cart-subtotal-row">
+                <span>Subtotal</span>
+                <span id="cart-subtotal">GHS 0.00</span>
+            </div>
+            <button class="checkout-btn" id="checkout-btn">Proceed to Checkout</button>
+        </div>
+    </aside>
+
+    <footer>
+        &copy; 2026 ARCHIVE. ALL RIGHTS RESERVED.
+    </footer>
+
+</body>
+</html>

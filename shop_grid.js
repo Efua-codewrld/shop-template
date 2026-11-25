@@ -1,46 +1,5 @@
 // 1. DATA SOURCE & FUSE.JS SETUP
-const catalogData = [
-    {
-        id: "prod001",
-        image: "images/image1.jpg",
-        title: "Archive Leather Bag",
-        price: 350,
-        Category: "Bags",
-        isAvailable: true
-    },
-    {
-        id: "prod002",
-        image: "images/image18.jpg",
-        title: "Archive essential bag",
-        price: 500,
-        Category: "Bags",
-        isAvailable: true
-    },
-    {
-        id: "prod003",
-        image: "images/image9.jpg",
-        title: "Plaid sweater",
-        price: 200,
-        Category: "tops",
-        isAvailable: true
-    },
-    {
-        id: "prod004",
-        image: "images/image8.jpg",
-        title: "camo sweater and sweatpants set",
-        price: 430,
-        Category: "tops",
-        isAvailable: true
-    },
-    {
-        id: "prod005",
-        image: "images/image4.jpg",
-        title: "Archive jorts",
-        price: 280,
-        Category: "bottoms",
-        isAvailable: false
-    }
-];
+/*NOTE: catalogData is already globally provided by products.js loaded before this file!*/
 
 // Targetting HTML viewport container
 const gridContainer = document.getElementById("catalogGrid");
@@ -67,7 +26,14 @@ function renderCatalog(productsArray = catalogData) {
             <a href="product.html?id=${item.id}">
                 <img src="${item.image}" alt="${item.title}">
                 </a>
-                ${!item.isAvailable ? '<span class="badge-sold">Sold out</span>' : ''}
+                ${!item.isAvailable 
+                    ? '<span class="badge-sold">Sold out</span>' 
+                    : `<button type="button" class="quick-add-btn" data-id="${item.id}" aria-label="Quick add to bag">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                        </svg>
+                       </button>`
+                }
             </div>
             <div class="card-info"> 
                 <span class="product-title">${item.title}</span>
@@ -136,9 +102,10 @@ function applyAllFilters() {
     }
 
     // Step B: Apply Category Filter
+    // Step B: Apply Category Filter
     if (activeFilters.category !== "all") {
         workingArray = workingArray.filter(item => {
-            return item.Category.toLowerCase() === activeFilters.category.toLowerCase();
+            return (item.Category || "").toLowerCase() === activeFilters.category.toLowerCase();
         });
     }
 
@@ -240,3 +207,22 @@ document.addEventListener('click', (e) => {
 
 // 8. INITIAL LAUNCH
 renderCatalog(catalogData);
+
+// QUICK-ADD EVENT DELEGATION
+gridContainer.addEventListener("click", (e) => {
+    const quickBtn = e.target.closest(".quick-add-btn");
+    if (!quickBtn) return;
+
+    const productId = quickBtn.getAttribute("data-id");
+    const product = catalogData.find(item => item.id === productId);
+
+    if (product && product.isAvailable) {
+        addToCart({
+            id: product.id,
+            name: product.title,   // Mapped from title -> name for cart.js
+            price: product.price,
+            image: product.image,
+            size: "Small (S)"      // Default quick-add size (matches your PDP default)
+        });
+    }
+});

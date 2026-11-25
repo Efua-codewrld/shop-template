@@ -5,6 +5,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>ARCHIVE - Editorial & Apparel</title>
         <link rel="stylesheet" href="style.css">
+        <script src="master_products.js" defer></script>
+        <script src="main.js" defer></script>
+        <script src="cart.js" defer></script>
     </head>
     
     <body>
@@ -67,10 +70,35 @@
 
         </section>
 
+        <!-- Dimmed Background Overlay -->
+<div class="cart-overlay" id="cart-overlay"></div>
+
+<!-- Slide-Out Cart Drawer -->
+<aside class="cart-drawer" id="cart-drawer">
+  <!-- Header Zone -->
+  <div class="cart-header">
+    <h2>Your Bag</h2>
+    <button class="close-cart-btn" id="close-cart-btn" aria-label="Close cart">&times;</button>
+  </div>
+
+  <!-- Scrollable Body Zone (JavaScript injects items here) -->
+  <div class="cart-items-container" id="cart-items-container">
+    <p class="empty-cart-msg">Your bag is currently empty.</p>
+  </div>
+
+  <!-- Pinned Footer Zone -->
+  <div class="cart-footer">
+    <div class="cart-subtotal-row">
+      <span>Subtotal</span>
+      <span id="cart-subtotal">GHS 0.00</span>
+    </div>
+    <button class="checkout-btn" id="checkout-btn">Proceed to Checkout</button>
+  </div>
+</aside>
         
         <footer>
             &copy; 2026 ARCHIVE. ALL RIGHTS RESERVED.
         </footer>
-        <script src="main.js"></script> 
+         
     </body>
 </html>

@@ -1,51 +1,6 @@
-// 1. YOUR MASTER CATALOG DATA (Keep this synchronized with your shop data)
-const catalogData = [
-    {
-        id: "prod001",
-        image: "images/image1.jpg",
-        title: "Archive Leather Bag",
-        price: 350,
-        Category: "Bags",
-        description: "Handcrafted vintage-finish leather bag designed for daily archival utility.",
-        isAvailable: true
-    },
-    {
-        id: "prod002",
-        image: "images/image18.jpg",
-        title: "Archive essential bag",
-        price: 500,
-        Category: "Bags",
-        description: "Minimalist essential carry-all built with heavy-duty weather-resistant canvas.",
-        isAvailable: true
-    },
-    {
-        id: "prod003",
-        image: "images/image9.jpg",
-        title: "Plaid sweater",
-        price: 200,
-        Category: "tops",
-        description: "Heavyweight winter plaid sweater with a relaxed, vintage boxy fit.",
-        isAvailable: true
-    },
-    {
-        id: "prod004",
-        image: "images/image8.jpg",
-        title: "camo sweater and sweatpants set",
-        price: 430,
-        Category: "tops",
-        description: "Matching tactical camo fleece set. Ultra-soft interior lining.",
-        isAvailable: true
-    },
-    {
-        id: "prod005",
-        image: "images/image4.jpg",
-        title: "Archive jorts",
-        price: 280,
-        Category: "bottoms",
-        description: "Distressed denim jorts featuring relaxed utility pockets and raw hems.",
-        isAvailable: false
-    }
-];
+// ==========================================
+// PRODUCT_DETAIL.JS (Relies on catalogData from master_product.js)
+// ==========================================
 
 // WhatsApp Order Handler Function (grabs current size from your bubble dropdown)
 function sendProductWhatsAppOrder(productId) {
@@ -58,9 +13,13 @@ function sendProductWhatsAppOrder(productId) {
 
     // Build the dynamic WhatsApp message
     const phoneNumber = "233508532866"; // Replace with your actual WhatsApp phone number
+    const colorText = Array.isArray(selectedProduct.colors) && selectedProduct.colors.length > 0
+        ? selectedProduct.colors.join(", ")
+        : "Standard";
     const message = `Hello Archive! I would like to order:\n\n` +
                     `Item: ${selectedProduct.title}\n` +
                     `Size: ${selectedSize}\n` +
+                    `Color: ${colorText}\n` +
                     `Price: GH₵${selectedProduct.price}\n\n` +
                     `Is this item available?`;
 
@@ -98,6 +57,18 @@ if (!product) {
                 <p class="pdp-price">GH₵${product.price}</p>
                 <p class="pdp-category">Category: <strong>${product.Category}</strong></p>
                 <p class="pdp-desc">${product.description || "No description provided for this archive piece."}</p>
+                <p class="pdp-stock">
+                    ${(Number(product.stockCount ?? product.stock_count ?? 0) > 0)
+                        ? `In Stock (${Number(product.stockCount ?? product.stock_count ?? 0)} available)`
+                        : "Out of Stock"}
+                </p>
+                ${Array.isArray(product.colors) && product.colors.length > 0 ? `
+                    <div class="pdp-colors">
+                        <span class="colors-label">Colors:</span>
+                        ${product.colors.map(color => `<span class="color-pill">${color}</span>`).join(" ")}
+                    </div>
+                ` : ""}
+                
                 
                 <div class="custom-dropdown-container">
                     <!-- The trigger pill button -->
@@ -132,6 +103,28 @@ if (!product) {
             </div>
         </div>
     `;
+    // --- WIRE UP THE ADD TO CART BUTTON ---
+const addToCartBtn = detailContainer.querySelector('.add-to-cart-btn');
+
+if (addToCartBtn && product.isAvailable) {
+    addToCartBtn.addEventListener('click', () => {
+        // 1. Grab the currently selected size from your dropdown text
+        const sizeElement = document.getElementById('selectedSizeText');
+        const selectedSize = sizeElement ? sizeElement.textContent : 'Standard';
+
+        // 2. Package the product object (mapping 'title' to 'name' for cart.js)
+        const productForCart = {
+            id: product.id,
+            name: product.title,       // Mapped from title -> name
+            price: product.price,
+            image: product.image,
+            size: selectedSize         // Captured dynamically from the user's choice
+        };
+
+        // 3. Fire your cart engine function from cart.js!
+        addToCart(productForCart);
+    });
+}
 }
 
 // Custom Dropdown & Size Selection Logic

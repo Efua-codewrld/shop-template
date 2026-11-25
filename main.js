@@ -1,39 +1,44 @@
-const catalogData=[{image:"images/image1.jpg",
-    title:"Archive leather bag",
-    price:"GH₵350"
-}, {
-    image:"images/image11.jpg",
-    title:"Plaid sweater",
-    price:"GH₵200"
-},
-{ image:"images/image8.jpg",
-    title:" camo sweater and sweatpants set",
-    price:"GH₵430"
-},
-{
-    image:"images/image4.jpg",
-    title:"Archive jorts",
-    price:"GH₵280"
-
-}]
+// ==========================================
+// MAIN.JS (Home Page New Arrivals Renderer)
+// ==========================================
 
 const gridContainer = document.getElementById("catalogGrid");
 
-function renderCatalog() {catalogData.forEach(item=>{
-    const card = document.createElement("div");
-    card.className = "product-card";
+function renderNewArrivals() {
+    if (!gridContainer) return;
+    
+    gridContainer.innerHTML = "";
 
-    card.innerHTML = `
-    <img src="${item.image}" alt="${item.title}">
-    <div class="card-overlay">
-    <span class="product-title">${item.title}</span>
-    <span class="product-price">${item.price}</span>
-    </div>
-    `;
+    // catalogData comes directly from products.js / localStorage
+    const newArrivalsList = catalogData.filter(item => item.isNew === true);
 
-    gridContainer.appendChild(card);
-});
+    if (newArrivalsList.length === 0) {
+        gridContainer.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #777;">No new arrivals at the moment.</p>`;
+        return;
+    }
+
+    newArrivalsList.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "product-card";
+
+        if (!item.isAvailable) {
+            card.classList.add("sold-out");
+        }
+
+        card.innerHTML = `
+            <div class="card-media">
+                <a href="shop.html">
+                    <img src="${item.image}" alt="${item.title}">
+                </a>
+                ${!item.isAvailable ? '<span class="badge-sold">Sold out</span>' : ''}
+            </div>
+            <div class="card-overlay">
+                <span class="product-title">${item.title}</span>
+                <span class="product-price">GH₵${item.price}</span>
+            </div>
+        `;
+        gridContainer.appendChild(card);
+    });
 }
 
-renderCatalog();
-
+renderNewArrivals();

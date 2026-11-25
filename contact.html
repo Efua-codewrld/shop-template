@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARCHIVE - Contact</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="cart.js" defer></script>
+</head>
+<body>
+
+    <header class="sticky-nav">
+        <nav class="tab-links">
+            <a href="index.html" class="tab-item">Home</a>
+            <a href="shop.html#catalogGrid" class="tab-item">New Arrivals</a>
+            <a href="shop.html" class="tab-item">Shop</a>
+            <a href="contact.html" class="tab-item">Contact</a>
+            <a href="terms.html" class="tab-item">Terms</a>
+            <button type="button" class="cart-trigger-btn" aria-label="Open bag">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="nav-cart-icon">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                </svg>
+                <span class="cart-badge">0</span>
+            </button>
+        </nav>
+    </header>
+
+    <main class="contact-page">
+        <section class="contact-card">
+            <div class="contact-card-header">
+                <h1>Get in Touch</h1>
+                <p>Questions about sizing, orders, or custom inquiries? Drop a note below.</p>
+            </div>
+
+            <form id="contactForm" class="contact-form">
+                <div class="contact-field">
+                    <label for="contactName">Name</label>
+                    <input type="text" id="contactName" name="name" placeholder="Your full name" required>
+                </div>
+
+                <div class="contact-field">
+                    <label for="contactEmail">Email</label>
+                    <input type="email" id="contactEmail" name="email" placeholder="you@example.com" required>
+                </div>
+
+                <div class="contact-field">
+                    <label for="contactPhone">Phone Number</label>
+                    <input type="tel" id="contactPhone" name="phone" placeholder="+233 XX XXX XXXX">
+                </div>
+
+                <div class="contact-field">
+                    <label for="contactComments">Comments</label>
+                    <textarea id="contactComments" name="comments" rows="4" placeholder="Write your message here..." required></textarea>
+                </div>
+
+                <button type="submit" class="contact-submit-btn">Send Message</button>
+                <p id="contactStatus" class="contact-status" hidden></p>
+            </form>
+        </section>
+    </main>
+
+    <!-- Dimmed Background Overlay -->
+    <div class="cart-overlay" id="cart-overlay"></div>
+
+    <!-- Slide-Out Cart Drawer -->
+    <aside class="cart-drawer" id="cart-drawer">
+        <div class="cart-header">
+            <h2>Your Bag</h2>
+            <button class="close-cart-btn" id="close-cart-btn" aria-label="Close cart">&times;</button>
+        </div>
+
+        <div class="cart-items-container" id="cart-items-container">
+            <p class="empty-cart-msg">Your bag is currently empty.</p>
+        </div>
+
+        <div class="cart-footer">
+            <div class="cart-subtotal-row">
+                <span>Subtotal</span>
+                <span id="cart-subtotal">GHS 0.00</span>
+            </div>
+            <button class="checkout-btn" id="checkout-btn">Proceed to Checkout</button>
+        </div>
+    </aside>
+
+    <footer>
+        &copy; 2026 ARCHIVE. ALL RIGHTS RESERVED.
+    </footer>
+
+    <script>
+        const contactForm = document.getElementById("contactForm");
+        const contactStatus = document.getElementById("contactStatus");
+
+        if (contactForm) {
+            contactForm.addEventListener("submit", (e) => {
+                e.preventDefault();
+                contactStatus.textContent = "Message received. We'll get back to you shortly.";
+                contactStatus.hidden = false;
+                contactForm.reset();
+            });
+        }
+    </script>
+
+</body>
+</html>

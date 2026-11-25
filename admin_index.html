@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Store Admin | Inventory Dashboard</title>
+    <link rel="stylesheet" href="style_2.css">
+    <link rel="stylesheet" href="admin.css">
+    <!-- 'defer' ensures HTML finishes loading before JavaScript tries to grab elements -->
+    <script src="main_admin.js" defer></script>
+</head>
+<body>
+
+    <!-- =====================================================================
+         0. MANAGER LOGIN GATE SCREEN (Visible until authenticated)
+         ===================================================================== -->
+    <section class="hero-banner" id="loginScreen">
+        <div class="admin-card">
+            <h2>Manager Access</h2>
+            <p>Enter your passcode to unlock the dashboard.</p>
+
+            <div class="formGroup">
+                <input type="password" id="adminPassword" placeholder="Enter password...">
+            </div>
+
+            <button type="button" id="loginBtn">Unlock Dashboard</button>
+
+            <!-- Error message area -->
+            <p id="errorMessage" style="color: #b33a3a; font-size: 0.85rem; margin-top: 15px; display: none;"></p>
+        </div>
+    </section>
+
+    <!-- =====================================================================
+         MAIN ADMIN WORKSPACE (Hidden until unlocked)
+         ===================================================================== -->
+    <div id="adminDashboard" style="display: none;">
+
+        <!-- 1. STICKY QUARTER-SCREEN BRAND HEADER (25vh) -->
+        <header class="brand-header">
+            <button type="button" id="menuBtn" class="menu-btn" aria-expanded="false" aria-controls="slideMenu" aria-label="Open navigation menu">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+            </button>
+
+            <div class="brand-identity">
+                <h1 class="brand-title">ATELIER ARCHIVE</h1>
+                <p class="brand-subtitle">Inventory &amp; Catalog Control</p>
+            </div>
+        </header>
+
+        <!-- 2. TINTED BACKDROP & SLIDE-OUT DRAWER -->
+        <div id="backdrop" class="backdrop"></div>
+
+        <nav id="slideMenu" class="drawer" aria-label="Dashboard Navigation">
+            <div class="drawer-header">
+                <span class="drawer-label">MENU</span>
+                <button type="button" id="menuClose" class="menu-close" aria-label="Close menu">&times;</button>
+            </div>
+
+            <ul class="drawer-links">
+                <li>
+                    <button type="button" class="nav-link active" data-target="inventoryView">
+                        Inventory Overview
+                    </button>
+                </li>
+                <li>
+                    <button type="button" class="nav-link" data-target="addItemView">
+                        + Add New Item
+                    </button>
+                </li>
+                <li style="margin-top: auto; padding-top: 1rem;">
+                    <button type="button" id="logoutBtn" class="nav-link">
+                        Log Out
+                    </button>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- 3. MAIN DASHBOARD WORKSPACE -->
+        <main class="dashboard-container">
+
+            <!-- VIEW A: INVENTORY OVERVIEW -->
+            <section id="inventoryView" class="dashboard-view active-view">
+                <div class="section-header">
+                    <div>
+                        <h2>Master Inventory</h2>
+                        <p class="section-subtext">Manage live storefront stock, pricing, and color variants.</p>
+                    </div>
+                    <button type="button" id="quickAddBtn" class="btn-primary">+ Add Item</button>
+                </div>
+
+                <div id="inventoryGrid" class="inventory-grid"></div>
+            </section>
+
+            <!-- VIEW B: ADD NEW ITEM FORM -->
+            <section id="addItemView" class="dashboard-view" hidden>
+                <div class="section-header">
+                    <div>
+                        <h2 id="formTitle">Add New Product</h2>
+                        <p class="section-subtext">Upload a gallery photo and details to publish to your master list.</p>
+                    </div>
+                    <button type="button" id="backToInventoryBtn" class="btn-secondary">&larr; Back to List</button>
+                </div>
+
+                <form id="addProductForm" class="product-form">
+                    <div class="form-group">
+                        <label for="productImageInput">Product Photo (From Gallery)</label>
+                        <div class="image-upload-box">
+                            <img id="imagePreview" src="images/image5.jpg" alt="Product preview" class="image-preview">
+                            <div class="upload-controls">
+                                <input type="file" id="productImageInput" accept="image/*">
+                                <p class="help-text">Select an image from your device gallery (or keep default preview).</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="productName">Product Name</label>
+                        <input type="text" id="productName" placeholder="e.g., Structured Mini Tote" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="productCategory">Category</label>
+                            <select id="productCategory" required>
+                                <option value="" disabled selected>Select a category</option>
+                                <option value="tops">Tops &amp; Sweaters</option>
+                                <option value="bottoms">Bottoms &amp; Jorts</option>
+                                <option value="bags">Bags &amp; Accessories</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="productPrice">Price (GHS)</label>
+                            <input type="number" id="productPrice" min="0" step="0.01" placeholder="250.00" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="prodDescription">Product Description</label>
+                        <textarea id="prodDescription" rows="3" placeholder="Fabric details, fit, or condition notes..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="productColors">Available Colors (separate with commas)</label>
+                        <input type="text" id="productColors" placeholder="e.g., Espresso, Butter Yellow, Black" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="productStock">Total Stock Quantity</label>
+                        <input type="number" id="productStock" min="0" value="1" required>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" id="formSubmitBtn" class="btn-primary btn-full">Save to Master Inventory</button>
+                        <button type="button" id="cancelEditBtn" class="btn-secondary" hidden>Cancel Edit</button>
+                    </div>
+                </form>
+            </section>
+
+        </main>
+    </div>
+
+</body>
+</html>

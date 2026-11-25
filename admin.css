@@ -1,0 +1,552 @@
+/* =========================================================================
+   1. ROOT VARIABLES (Strictly your defined palette and typography)
+   ========================================================================= */
+:root {
+    /* Header & Drawer Brand Variables */
+    --brand-accent: #3D2115;       /* Accents & Hover States: Deep Rich Brown */
+    --palette-accent: #F3E5AB;     /* Highlight Accent: Dulled Butter Yellow */
+    --brand-base: #2b1810;         /* Sticky Header & Drawer Base */
+
+    /* Main Canvas & UI Variables */
+    --bg-primary: #FBF9F6;         /* Main Canvas: Off-White Cream */
+    --text-main: #2B3020;          /* Primary Text & Titles: Deep Camo Green */
+    --text-muted: #5F665E;         /* Secondary Text & Links: Grey-Green Highlight */
+    --border-subtle: #DCD7C9;      /* Divider Lines: Muted Beige */
+    --font-primary: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --card-bg-dark: #1a1a1a;       /* Media placeholders */
+    --border-dark: #222222;
+    --placeholder-gray: #666666;
+    --text-subtle: #4a4a4a;
+    --label-dark: #2a2a2a;
+    --focus-black: #000000;
+    --filter-bg: #f9f9f9;
+    --filter-border: #ddd;
+}
+
+/* =========================================================================
+   2. GLOBAL RESET & BASE CANVAS
+   ========================================================================= */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+[hidden] {
+    display: none;
+}
+
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-main);
+    font-family: var(--font-primary);
+    line-height: 1.5;
+}
+
+/*=========================================================================
+Login Page css
+=========================================================================*/
+.hero-banner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .admin-card {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 40px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+        }
+        .admin-card h2 {
+            margin-bottom: 10px;
+            color: var(--brand-primary, #111);
+        }
+        .admin-card p {
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+            color: #333;
+        }
+        .admin-card input {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.8);
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+        .admin-card button {
+            width: 100%;
+            padding: 12px;
+            background: #2b1810;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .admin-card button:hover {
+            background: var(--brand-accent)
+        }
+
+        #logoutBtn{
+            padding: 12px 25px;
+            background: var(--brand-base);
+            color: var(--palette-accent);
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: background 0.2s;
+        }
+
+        #logoutBtn:hover{
+            background: var(--brand-accent)
+
+        }
+
+/* =========================================================================
+   3. STICKY QUARTER-SCREEN BRAND HEADER (25vh)
+   ========================================================================= */
+.brand-header {
+    position: sticky;             /* Sticks to the top of viewport on scroll */
+    top: 0;
+    height: 25vh;                 /* Takes up exactly one-quarter of screen height */
+    background-color: var(--brand-base);
+    color: var(--palette-accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;                 /* Stays above scrolling inventory cards */
+    border-bottom: 1px solid var(--brand-accent);
+}
+
+/* Menu button positioned relative to the sticky header */
+.menu-btn {
+    position: absolute;
+    top: 1.25rem;
+    left: 1.25rem;
+    background: transparent;
+    border: 1px solid var(--palette-accent);
+    color: var(--palette-accent);
+    padding: 0.45rem;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+}
+
+.menu-btn:hover {
+    background-color: var(--brand-accent);
+}
+
+.menu-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.brand-identity {
+    text-align: center;
+    padding: 0 1rem;
+}
+
+.brand-title {
+    font-size: 1.5rem;
+    letter-spacing: 0.14em;
+    font-weight: 600;
+    color: var(--palette-accent);
+}
+
+.brand-subtitle {
+    font-size: 0.85rem;
+    color: var(--border-subtle);
+    margin-top: 0.35rem;
+    letter-spacing: 0.05em;
+}
+
+/* =========================================================================
+   4. TINTED BACKDROP & SLIDE-OUT DRAWER
+   ========================================================================= */
+.backdrop {
+    position: fixed;
+    inset: 0;                     /* Stretches to top:0, right:0, bottom:0, left:0 */
+    background-color: rgba(0, 0, 0, 0.5); /* 50% dimmed black overlay */
+    opacity: 0;
+    visibility: hidden;           /* Unclickable and invisible when closed */
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 200;
+}
+
+.backdrop.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 270px;
+    height: 100vh;
+    background-color: var(--brand-base);
+    color: var(--palette-accent);
+    padding: 1.5rem;
+    transform: translateX(-100%); /* Tucked completely off-screen to the left */
+    visibility: hidden;           /* Prevents keyboard Tab focus while closed */
+    transition: transform 0.3s ease-in-out, visibility 0.3s;
+    z-index: 300;                 /* Sits above the tinted backdrop */
+    display: flex;
+    flex-direction: column;
+}
+
+.drawer.open {
+    transform: translateX(0);     /* Glides smoothly into view */
+    visibility: visible;
+}
+
+.drawer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--brand-accent);
+    margin-bottom: 1.5rem;
+}
+
+.drawer-label {
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    color: var(--border-subtle);
+}
+
+.menu-close {
+    background: none;
+    border: none;
+    color: var(--palette-accent);
+    font-size: 1.75rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.drawer-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.nav-link {
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: none;
+    color: var(--bg-primary);
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    padding: 0.75rem 0.85rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    background-color: var(--brand-accent);
+    color: var(--palette-accent);
+}
+
+/* =========================================================================
+   5. MAIN DASHBOARD LAYOUT & BUTTONS
+   ========================================================================= */
+.dashboard-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 4rem;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding-bottom: 1.25rem;
+    margin-bottom: 1.75rem;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.section-header h2 {
+    font-size: 1.35rem;
+    color: var(--text-main);
+}
+
+.section-subtext {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-top: 0.2rem;
+}
+
+.btn-primary {
+    background-color: var(--brand-accent);
+    color: var(--palette-accent);
+    border: none;
+    padding: 0.65rem 1.2rem;
+    font-family: var(--font-primary);
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn-primary:hover {
+    background-color: var(--brand-base);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--text-main);
+    border: 1px solid var(--border-subtle);
+    padding: 0.6rem 1rem;
+    font-family: var(--font-primary);
+    font-size: 0.85rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-secondary:hover {
+    border-color: var(--brand-accent);
+}
+
+.btn-full {
+    width: 100%;
+    padding: 0.85rem;
+    font-size: 1rem;
+    margin-top: 0.5rem;
+}
+
+/* =========================================================================
+   6. VIEW A: INVENTORY MASTER GRID & PRODUCT CARDS
+   ========================================================================= */
+.inventory-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5rem;
+}
+
+.product-card {
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-media {
+    width: 100%;
+    height: 210px;
+    background-color: var(--card-bg-dark);
+    position: relative;
+}
+
+.card-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.stock-badge {
+    position: absolute;
+    top: 0.65rem;
+    right: 0.65rem;
+    background-color: var(--brand-base);
+    color: var(--palette-accent);
+    font-size: 0.75rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 3px;
+}
+
+.stock-badge.out-of-stock {
+    background-color: var(--border-dark);
+    color: var(--border-subtle);
+}
+
+.card-body {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex-grow: 1;
+}
+
+.card-category {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+}
+
+.card-title {
+    font-size: 1.05rem;
+    color: var(--text-main);
+    font-weight: 600;
+}
+
+.card-price {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--brand-accent);
+}
+
+/* Color Variant Pills */
+.color-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.25rem;
+}
+
+.color-tag {
+    font-size: 0.75rem;
+    background-color: var(--filter-bg);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-subtle);
+    padding: 0.15rem 0.55rem;
+    border-radius: 999px;
+}
+
+.card-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: auto;
+    padding-top: 0.85rem;
+    border-top: 1px solid var(--border-subtle);
+}
+
+.btn-card {
+    flex: 1;
+    padding: 0.45rem;
+    font-size: 0.8rem;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 1px solid var(--border-subtle);
+    background-color: transparent;
+    color: var(--text-main);
+}
+
+.btn-card:hover {
+    border-color: var(--brand-accent);
+    color: var(--brand-accent);
+}
+
+.btn-delete:hover {
+    background-color: var(--brand-accent);
+    color: var(--palette-accent);
+}
+
+/* =========================================================================
+   7. VIEW B: ADD NEW ITEM FORM
+   ========================================================================= */
+.product-form {
+    background-color: var(--filter-bg);
+    border: 1px solid var(--border-subtle);
+    padding: 1.5rem;
+    border-radius: 6px;
+    max-width: 600px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 1.15rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.form-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--label-dark);
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"] {
+    padding: 0.65rem 0.75rem;
+    border: 1px solid var(--filter-border);
+    border-radius: 4px;
+    font-family: var(--font-primary);
+    font-size: 0.95rem;
+    color: var(--text-main);
+    background-color: var(--bg-primary);
+}
+
+.form-group input::placeholder {
+    color: var(--placeholder-gray);
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--focus-black);
+}
+
+.image-upload-box {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background-color: var(--bg-primary);
+    border: 1px dashed var(--border-subtle);
+    padding: 0.85rem;
+    border-radius: 4px;
+}
+
+.image-preview {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 4px;
+    background-color: var(--card-bg-dark);
+    flex-shrink: 0;
+}
+
+.help-text {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-top: 0.35rem;
+}
+.form-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--text-main);
+    border: 1px solid var(--border-subtle);
+    padding: 0.75rem 1.25rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 500;
+}
+
+.btn-secondary:hover {
+    background-color: rgba(61, 33, 21, 0.06);
+}
