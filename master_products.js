@@ -1,147 +1,71 @@
 // ==========================================
-// MASTER_PRODUCTS.JS (Shared Storefront Data Bridge)
+// MASTER_PRODUCTS.JS (Backend API Data Bridge)
 // ==========================================
 
-const CATALOG_DB_KEY = "atelier_products_db";
+const API_BASE_URL = "http://127.0.0.1:8000";
 
-const defaultCatalog = [
-    {
-        id: "prod001",
-        imageUrl: "images/image1.jpg",
-        image: "images/image1.jpg",
-        title: "Archive Leather Bag",
-        name: "Archive Leather Bag",
-        price: 350,
-        category: "Bags",
-        Category: "Bags",
-        colors: ["Espresso", "Black"],
-        stockCount: 5,
-        description: "Handcrafted vintage-finish leather bag designed for daily archival utility.",
-        isAvailable: true,
-        inStock: true,
-        isNew: true,
-        createdAt: 1700000001000
-    },
-    {
-        id: "prod002",
-        imageUrl: "images/image18.jpg",
-        image: "images/image18.jpg",
-        title: "Archive Essential Bag",
-        name: "Archive Essential Bag",
-        price: 500,
-        category: "Bags",
-        Category: "Bags",
-        colors: ["Olive", "Black"],
-        stockCount: 4,
-        description: "Minimalist essential carry-all built with heavy-duty weather-resistant canvas.",
-        isAvailable: true,
-        inStock: true,
-        isNew: false,
-        createdAt: 1700000002000
-    },
-    {
-        id: "prod003",
-        imageUrl: "images/image9.jpg",
-        image: "images/image9.jpg",
-        title: "Plaid Sweater",
-        name: "Plaid Sweater",
-        price: 200,
-        category: "tops",
-        Category: "tops",
-        colors: ["Burgundy", "Charcoal"],
-        stockCount: 6,
-        description: "Heavyweight winter plaid sweater with a relaxed, vintage boxy fit.",
-        isAvailable: true,
-        inStock: true,
-        isNew: true,
-        createdAt: 1700000003000
-    },
-    {
-        id: "prod004",
-        imageUrl: "images/image8.jpg",
-        image: "images/image8.jpg",
-        title: "Camo Sweater and Sweatpants Set",
-        name: "Camo Sweater and Sweatpants Set",
-        price: 430,
-        category: "tops",
-        Category: "tops",
-        colors: ["Forest Camo"],
-        stockCount: 3,
-        description: "Matching tactical camo fleece set. Ultra-soft interior lining.",
-        isAvailable: true,
-        inStock: true,
-        isNew: true,
-        createdAt: 1700000004000
-    },
-    {
-        id: "prod005",
-        imageUrl: "images/image4.jpg",
-        image: "images/image4.jpg",
-        title: "Archive Jorts",
-        name: "Archive Jorts",
-        price: 280,
-        category: "bottoms",
-        Category: "bottoms",
-        colors: ["Washed Indigo"],
-        stockCount: 0,
-        description: "Distressed denim jorts featuring relaxed utility pockets and raw hems.",
-        isAvailable: false,
-        inStock: false,
-        isNew: true,
-        createdAt: 1700000005000
-    }
-];
+let catalogData = [];
+window.catalogData = catalogData;
 
-// Normalizes items from localStorage so both Admin fields (name, imageUrl, category, inStock)
-// and Storefront fields (title, image, Category, isAvailable) work seamlessly together.
-function normalizeProduct(item) {
+function normalizeBackendProduct(item) {
     const resolvedName = item.name || item.title || "Untitled Item";
-    const resolvedImage = item.imageUrl || item.image || "images/image5.jpg";
+    const resolvedImage = item.image_url || item.imageUrl || item.image || "images/image5.jpg";
     const resolvedCategory = item.category || item.Category || "General";
-    const resolvedStock = typeof item.stockCount === "number"
-        ? item.stockCount
-        : (item.isAvailable === false ? 0 : 1);
-    const resolvedAvailable = typeof item.inStock === "boolean"
-        ? item.inStock
+    const resolvedStock = typeof item.stock_count === "number"
+        ? item.stock_count
+        : (typeof item.stockCount === "number" ? item.stockCount : 0);
+    const resolvedAvailable = typeof item.is_available === "boolean"
+        ? item.is_available
         : (typeof item.isAvailable === "boolean" ? item.isAvailable : resolvedStock > 0);
+    const resolvedNew = item.is_new !== undefined
+    ? Boolean(item.is_new === "false" || item.is_new === "0" ? false : item.is_new)
+    : Boolean(item.isNew);
 
     return {
         ...item,
-        id: item.id || ("prod_" + Date.now() + "_" + Math.random().toString(36).slice(2, 6)),
+        id: item.id,
         name: resolvedName,
         title: resolvedName,
+        image_url: resolvedImage,
         imageUrl: resolvedImage,
         image: resolvedImage,
         category: resolvedCategory,
         Category: resolvedCategory,
         price: Number(item.price) || 0,
         colors: Array.isArray(item.colors) ? item.colors : [],
+        stock_count: resolvedStock,
         stockCount: resolvedStock,
-        inStock: resolvedAvailable,
+        is_available: resolvedAvailable,
         isAvailable: resolvedAvailable,
-        isNew: Boolean(item.isNew),
+        inStock: resolvedAvailable,
+        is_new: resolvedNew,
+        isNew: resolvedNew,
         description: item.description || "",
-        createdAt: item.createdAt || Date.now()
+        created_at: item.created_at || null
     };
 }
 
-function getCatalogProducts() {
-    const raw = localStorage.getItem(CATALOG_DB_KEY);
-    if (!raw) {
-        const seeded = defaultCatalog.map(normalizeProduct);
-        localStorage.setItem(CATALOG_DB_KEY, JSON.stringify(seeded));
-        return seeded;
+async function fetchCatalogProducts() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/products`, { cache: "no-store" });
+        if (!response.ok) {
+            throw new Error(`Failed to fetch products (${response.status})`);
+        }
+        const data = await response.json();
+        const rawList = Array.isArray(data)
+            ? data
+            : (Array.isArray(data.products) ? data.products : []);
+
+        catalogData = rawList.map(normalizeBackendProduct);
+        window.catalogData = catalogData;
+    } catch (err) {
+        console.error("Error loading catalog from backend:", err);
+        catalogData = [];
+        window.catalogData = catalogData;
     }
 
-    try {
-        const parsed = JSON.parse(raw);
-        if (!Array.isArray(parsed)) return defaultCatalog.map(normalizeProduct);
-        return parsed.map(normalizeProduct);
-    } catch (err) {
-        console.error("Failed to parse catalog from localStorage:", err);
-        return defaultCatalog.map(normalizeProduct);
-    }
+    document.dispatchEvent(new CustomEvent("catalogLoaded", { detail: catalogData }));
+    return catalogData;
 }
 
-// Global variable that shop_grid.js, product_detail.js, or main.js can read
-const catalogData = getCatalogProducts();
+const catalogReadyPromise = fetchCatalogProducts();

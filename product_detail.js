@@ -1,83 +1,92 @@
 // ==========================================
-// PRODUCT_DETAIL.JS (Relies on catalogData from master_product.js)
+// PRODUCT_DETAIL.JS (Product Detail Page)
 // ==========================================
 
-// WhatsApp Order Handler Function (grabs current size from your bubble dropdown)
+function getCatalogList() {
+    if (Array.isArray(window.catalogData)) return window.catalogData;
+    if (typeof catalogData !== "undefined" && Array.isArray(catalogData)) return catalogData;
+    return [];
+}
+
 function sendProductWhatsAppOrder(productId) {
-    const selectedProduct = catalogData.find(item => item.id === productId);
+    const list = getCatalogList();
+    const selectedProduct = list.find((item) => item.id === productId);
     if (!selectedProduct) return;
 
-    // Grab the size from your custom bubble dropdown text element
-    const sizeElement = document.getElementById('selectedSizeText');
-    const selectedSize = sizeElement ? sizeElement.textContent : 'Standard';
+    const sizeElement = document.getElementById("selectedSizeText");
+    const selectedSize = sizeElement ? sizeElement.textContent : "Standard";
 
-    // Build the dynamic WhatsApp message
-    const phoneNumber = "233508532866"; // Replace with your actual WhatsApp phone number
+    const phoneNumber = "233508532866";
     const colorText = Array.isArray(selectedProduct.colors) && selectedProduct.colors.length > 0
         ? selectedProduct.colors.join(", ")
         : "Standard";
+
     const message = `Hello Archive! I would like to order:\n\n` +
-                    `Item: ${selectedProduct.title}\n` +
+                    `Item: ${selectedProduct.title || selectedProduct.name || "Untitled Item"}\n` +
                     `Size: ${selectedSize}\n` +
                     `Color: ${colorText}\n` +
                     `Price: GH₵${selectedProduct.price}\n\n` +
                     `Is this item available?`;
 
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
+    window.open(whatsappUrl, "_blank");
 }
 
-// 2. READ THE URL "BOARDING PASS" (?id=prod00X)
-const urlParams = new URLSearchParams(window.location.search);
-const productId = urlParams.get('id');
-
-// 3. FIND THE MATCHING PRODUCT IN OUR DATA ARRAY
-const product = catalogData.find(item => item.id === productId);
-
-// 4. TARGET THE PAGE CONTAINER
 const detailContainer = document.getElementById("productDetailContainer");
 
-// 5. RENDER THE DETAILS (Or show an error if the ID is broken)
-if (!product) {
-    detailContainer.innerHTML = `
-        <div style="text-align: center; padding: 80px;">
-            <h2>Product not found</h2>
-            <p>The item you're looking for doesn't exist or has been removed.</p>
-            <a href="shop.html" style="color: inherit; text-decoration: underline; margin-top: 20px; display: inline-block;">Return to Shop</a>
-        </div>
-    `;
-} else {
+function renderProductDetail() {
+    if (!detailContainer) return;
+
+    const list = getCatalogList();
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get("id");
+    const product = list.find((item) => item.id === productId);
+
+    if (!product) {
+        detailContainer.innerHTML = `
+            <div style="text-align: center; padding: 80px;">
+                <h2>Product not found</h2>
+                <p>The item you're looking for doesn't exist or has been removed.</p>
+                <a href="shop.html" style="color: inherit; text-decoration: underline; margin-top: 20px; display: inline-block;">Return to Shop</a>
+            </div>
+        `;
+        return;
+    }
+
+    const title = product.title || product.name || "Untitled Item";
+    const image = product.image || product.image_url || product.imageUrl || "images/image5.jpg";
+    const category = product.category || product.Category || "General";
+    const stockQty = Number(product.stock_count ?? product.stockCount ?? 0);
+    const isAvailable = typeof product.isAvailable === "boolean"
+        ? product.isAvailable
+        : (typeof product.is_available === "boolean" ? product.is_available : stockQty > 0);
+
     detailContainer.innerHTML = `
         <div class="pdp-grid">
             <div class="pdp-image-wrapper">
-                <img src="${product.image}" alt="${product.title}">
+                <img src="${image}" alt="${title}">
             </div>
             <div class="pdp-info">
-                <h1>${product.title}</h1>
+                <h1>${title}</h1>
                 <p class="pdp-price">GH₵${product.price}</p>
-                <p class="pdp-category">Category: <strong>${product.Category}</strong></p>
+                <p class="pdp-category">Category: <strong>${category}</strong></p>
                 <p class="pdp-desc">${product.description || "No description provided for this archive piece."}</p>
                 <p class="pdp-stock">
-                    ${(Number(product.stockCount ?? product.stock_count ?? 0) > 0)
-                        ? `In Stock (${Number(product.stockCount ?? product.stock_count ?? 0)} available)`
-                        : "Out of Stock"}
+                    ${stockQty > 0 ? `In Stock (${stockQty} available)` : "Out of Stock"}
                 </p>
                 ${Array.isArray(product.colors) && product.colors.length > 0 ? `
                     <div class="pdp-colors">
                         <span class="colors-label">Colors:</span>
-                        ${product.colors.map(color => `<span class="color-pill">${color}</span>`).join(" ")}
+                        ${product.colors.map((color) => `<span class="color-pill">${color}</span>`).join(" ")}
                     </div>
                 ` : ""}
-                
-                
+
                 <div class="custom-dropdown-container">
-                    <!-- The trigger pill button -->
                     <button type="button" class="dropdown-trigger" id="sizeDropdownTrigger">
                         <span id="selectedSizeText">Small (S)</span>
                         <span class="arrow">▼</span>
                     </button>
 
-                    <!-- The custom floating menu -->
                     <div class="dropdown-menu" id="sizeDropdownMenu">
                         <div class="dropdown-item active" data-value="Small (S)">Small (S)</div>
                         <div class="dropdown-item" data-value="Medium (M)">Medium (M)</div>
@@ -86,75 +95,75 @@ if (!product) {
                     </div>
                 </div>
 
-                <!-- Action Buttons Container -->
                 <div class="pdp-actions" style="margin-top: 25px; display: flex; flex-direction: column; gap: 15px;">
-                    <!-- WhatsApp Order Button -->
-                    <button class="order-btn" 
+                    <button class="order-btn"
                         onclick="sendProductWhatsAppOrder('${product.id}')"
-                        ${!product.isAvailable ? 'disabled' : ''}>
-                        ${product.isAvailable ? 'Order via Whatsapp' : 'SOLD OUT'}
+                        ${!isAvailable ? "disabled" : ""}>
+                        ${isAvailable ? "Order via Whatsapp" : "SOLD OUT"}
                     </button>
 
-                   <!-- Add to Cart Button-->
-                    <button class="add-to-cart-btn" ${!product.isAvailable ? 'disabled' : ''}>
-                        ${product.isAvailable ? 'Add to Cart' : 'SOLD OUT'}
+                    <button class="add-to-cart-btn" ${!isAvailable ? "disabled" : ""}>
+                        ${isAvailable ? "Add to Cart" : "SOLD OUT"}
                     </button>
                 </div>
             </div>
         </div>
     `;
-    // --- WIRE UP THE ADD TO CART BUTTON ---
-const addToCartBtn = detailContainer.querySelector('.add-to-cart-btn');
 
-if (addToCartBtn && product.isAvailable) {
-    addToCartBtn.addEventListener('click', () => {
-        // 1. Grab the currently selected size from your dropdown text
-        const sizeElement = document.getElementById('selectedSizeText');
-        const selectedSize = sizeElement ? sizeElement.textContent : 'Standard';
+    const addToCartBtn = detailContainer.querySelector(".add-to-cart-btn");
+    if (addToCartBtn && isAvailable) {
+        addToCartBtn.addEventListener("click", () => {
+            const sizeElement = document.getElementById("selectedSizeText");
+            const selectedSize = sizeElement ? sizeElement.textContent : "Standard";
 
-        // 2. Package the product object (mapping 'title' to 'name' for cart.js)
-        const productForCart = {
-            id: product.id,
-            name: product.title,       // Mapped from title -> name
-            price: product.price,
-            image: product.image,
-            size: selectedSize         // Captured dynamically from the user's choice
-        };
-
-        // 3. Fire your cart engine function from cart.js!
-        addToCart(productForCart);
-    });
-}
+            if (typeof addToCart === "function") {
+                addToCart({
+                    id: product.id,
+                    name: title,
+                    price: product.price,
+                    image,
+                    size: selectedSize
+                });
+            }
+        });
+    }
 }
 
-// Custom Dropdown & Size Selection Logic
-document.addEventListener('click', (e) => {
-    const trigger = document.getElementById('sizeDropdownTrigger');
-    const menu = document.getElementById('sizeDropdownMenu');
-    const selectedText = document.getElementById('selectedSizeText');
+document.addEventListener("click", (e) => {
+    const trigger = document.getElementById("sizeDropdownTrigger");
+    const menu = document.getElementById("sizeDropdownMenu");
+    const selectedText = document.getElementById("selectedSizeText");
 
     if (!trigger || !menu) return;
 
-    // 1. If user clicks the trigger bubble, toggle the menu
     if (trigger.contains(e.target)) {
         e.stopPropagation();
-        menu.classList.toggle('show');
+        menu.classList.toggle("show");
         return;
     }
 
-    // 2. If user clicks an option inside the menu
-    const item = e.target.closest('.dropdown-item');
+    const item = e.target.closest(".dropdown-item");
     if (item && menu.contains(item)) {
-        selectedText.textContent = item.getAttribute('data-value');
-        
-        // Update active highlight class
-        menu.querySelectorAll('.dropdown-item').forEach(i => i.classList.remove('active'));
-        item.classList.add('active');
+        if (selectedText) selectedText.textContent = item.getAttribute("data-value");
 
-        menu.classList.remove('show');
+        menu.querySelectorAll(".dropdown-item").forEach((i) => i.classList.remove("active"));
+        item.classList.add("active");
+
+        menu.classList.remove("show");
         return;
     }
 
-    // 3. Close menu if user clicks anywhere else on the page
-    menu.classList.remove('show');
+    menu.classList.remove("show");
 });
+
+if (detailContainer) {
+    detailContainer.innerHTML = `<div style="text-align: center; padding: 80px;"><p>Loading item details...</p></div>`;
+}
+
+if (typeof catalogReadyPromise !== "undefined" && catalogReadyPromise && typeof catalogReadyPromise.then === "function") {
+    catalogReadyPromise.then(() => {
+        renderProductDetail();
+    });
+} else {
+    document.addEventListener("DOMContentLoaded", renderProductDetail);
+}

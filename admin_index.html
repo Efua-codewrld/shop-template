@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Store Admin | Inventory Dashboard</title>
-    <link rel="stylesheet" href="style_2.css">
     <link rel="stylesheet" href="admin.css">
     <!-- 'defer' ensures HTML finishes loading before JavaScript tries to grab elements -->
     <script src="main_admin.js" defer></script>
@@ -145,6 +144,15 @@
                         <label for="productColors">Available Colors (separate with commas)</label>
                         <input type="text" id="productColors" placeholder="e.g., Espresso, Butter Yellow, Black" required>
                     </div>
+
+                    <div class="form-group">
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                        <input type="checkbox" id="productIsNew">
+                        <span>Show in New Arrivals</span>
+                        </label>
+                    </div>
+                    
+                   
 
                     <div class="form-group">
                         <label for="productStock">Total Stock Quantity</label>
